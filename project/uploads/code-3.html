@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .serif-text {
+            font-family: 'Noto Serif', serif;
+        }
+    </style>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-tertiary-container": "#ffffff", "on-secondary-fixed-variant": "#3b3b3c", "surface-container-high": "#e9e8e7", "inverse-on-surface": "#f2f0f0", "surface-container-lowest": "#ffffff", "on-error-container": "#410002", primary: "#000000", "surface-container-low": "#f5f3f3", "surface-container-highest": "#e3e2e2", secondary: "#5e5e5e", "on-primary": "#e3e2e2", "primary-container": "#3b3b3c", "tertiary-container": "#747474", "outline-variant": "#c6c6c6", "surface-variant": "#e3e2e2", surface: "#fbf9f9", "on-background": "#1b1c1c", error: "#ba1a1a", "surface-container": "#efeded", "on-primary-container": "#ffffff", outline: "#777777", "on-primary-fixed-variant": "#e3e2e2", "on-primary-fixed": "#ffffff", "inverse-surface": "#303031", "secondary-fixed": "#c7c6c6", "on-secondary-fixed": "#1b1c1c", "on-secondary": "#ffffff", "tertiary-fixed-dim": "#464747", tertiary: "#3b3b3c", "on-tertiary-fixed-variant": "#e3e2e2", "on-tertiary": "#e3e2e2", "primary-fixed-dim": "#464747", "on-tertiary-fixed": "#ffffff", "secondary-container": "#d5d4d4", "on-secondary-container": "#1b1c1c", "on-surface-variant": "#474747", "error-container": "#ffdad6", "surface-bright": "#fbf9f9", "on-surface": "#1b1c1c", "tertiary-fixed": "#5e5e5e", "inverse-primary": "#c7c6c6", "surface-tint": "#5e5e5e", background: "#fbf9f9", "surface-dim": "#dbdad9", "secondary-fixed-dim": "#acabab", "primary-fixed": "#5e5e5e", "on-error": "#ffffff"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, fontFamily: {headline: ["Noto Serif"], body: ["Plus Jakarta Sans"], label: ["Plus Jakarta Sans"], display: "Noto Serif"}}}};</script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface sticky top-0 z-50 flex justify-between items-center w-full px-6 py-4 dock full-width">
+<div class="flex items-center gap-4">
+<button class="hover:opacity-70 transition-opacity active:opacity-50 duration-150" style="">
+<span class="material-symbols-outlined text-black text-xl" data-icon="arrow_back_ios" style="">arrow_back_ios</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-lg font-serif font-semibold text-neutral-900 italic" style="">愛子</h1>
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="text-[10px] uppercase tracking-widest font-label text-outline" style="">Online</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:opacity-70 transition-opacity active:opacity-50 duration-150">
+<span class="material-symbols-outlined text-black" data-icon="call">call</span>
+</button><button class="hover:opacity-70 transition-opacity active:opacity-50 duration-150" style="">
+<span class="material-symbols-outlined text-black" data-icon="more_horiz" style="">more_horiz</span>
+</button>
+</div>
+</header>
+<!-- Chat Area -->
+<main class="flex-1 overflow-y-auto px-6 py-4 space-y-6 bg-surface">
+<!-- Date Marker -->
+<div class="flex justify-center my-4">
+<span class="text-[11px] font-label uppercase tracking-widest text-outline bg-surface-container px-3 py-1 rounded-full" style="">Today</span>
+</div>
+<!-- AI Message -->
+<div class="flex flex-col items-start max-w-[85%] space-y-1">
+<div class="bg-surface-container-low px-4 py-2.5 shadow-sm rounded-[24px]">
+<p class="text-sm leading-relaxed font-body text-on-surface" style="">Hello!</p>
+</div>
+<span class="text-[10px] font-label text-outline ml-3" style="">09:41 AM</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end max-w-[85%] ml-auto space-y-1">
+<div class="bg-primary px-4 py-2.5 shadow-sm bg-gradient-to-br from-primary to-primary-container rounded-[24px]">
+<p class="text-sm leading-relaxed font-body text-on-primary" style="">I miss youuuuuu!!!</p>
+</div>
+<span class="text-[10px] font-label text-outline mr-3" style="">09:42 AM</span>
+</div>
+<!-- AI Message with Image -->
+<div class="flex flex-col items-start max-w-[85%] space-y-1">
+<div class="bg-surface-container-low p-2 shadow-sm space-y-2 rounded-[24px]">
+<div class="px-2 pt-1 pb-1">
+<p class="text-sm leading-relaxed font-body text-on-surface" style="">I got you ice cream, you're welcome</p>
+</div>
+<div class="rounded-[20px] overflow-hidden aspect-[4/3] bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Modern minimalist architecture with sleek vertical lines of concrete and large glass panels reflecting a quiet pine forest at dawn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAySIzFreCJFmeaHNglBcVE-5sn-H3eWz7o77lq7JX_G2C0ob0WMHEZfJEvfD54jrJHm35B3xAmzdEmlhtFy323rnoHyKels0uYdb2PAab7By_F1ULfTQLNp2DOFtPpF3tP9ouEhcIwdqqWtx6-L3z4aOfDRzv9F-MBTEnRv9z6X_CyHgDMbTRZa963I7X4DK3lsAkm8CPtJVwU3388OnB90MwVMkgoYW7sup0ej7nfU2-oO79g_4_ipDyG9kN6-kUhBWBma6M7f4yu" style=""/>
+</div>
+</div>
+<span class="text-[10px] font-label text-outline ml-3" style="">09:44 AM</span>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end max-w-[85%] ml-auto space-y-1">
+<div class="bg-primary px-4 py-2.5 shadow-sm bg-gradient-to-br from-primary to-primary-container rounded-[24px]">
+<p class="text-sm leading-relaxed font-body text-on-primary" style="">That sounds perfect, 愛子. Let's focus on the monochromatic textures and natural light integration.</p>
+</div>
+<span class="text-[10px] font-label text-outline mr-3" style="">09:45 AM</span>
+</div>
+<!-- AI Message (Audio) -->
+<div class="flex flex-col items-start max-w-[85%] space-y-1">
+<div class="bg-surface-container-low px-4 py-3 shadow-sm rounded-[24px]">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="audio_file" style="">audio_file</span>
+<span class="text-[10px] font-label uppercase tracking-widest text-outline" style="">Ambient Curation</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest p-2 rounded-full">
+<button class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white" style="">
+<span class="material-symbols-outlined text-lg" data-icon="play_arrow" data-weight="fill" style="">play_arrow</span>
+</button>
+<div class="flex-1 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/3"></div>
+</div>
+<span class="text-[10px] font-label text-on-surface-variant pr-2" style="">0:12</span>
+</div>
+</div>
+<span class="text-[10px] font-label text-outline ml-3" style="">09:46 AM</span>
+</div>
+</main>
+<!-- Bottom Input Area -->
+<footer class="bg-surface-container-lowest border-t-0 p-4 pb-8 space-y-4">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-outline" style="">
+<span class="material-symbols-outlined" data-icon="mic" style="">mic</span>
+</button>
+<div class="flex-1 bg-surface-container-high rounded-full px-4 py-2.5 flex items-center transition-all focus-within:bg-surface-container-lowest focus-within:shadow-lg focus-within:ring-1 focus-within:ring-outline-variant/20">
+<input class="bg-transparent border-none focus:ring-0 text-sm font-body text-on-surface w-full placeholder:text-outline/60" placeholder="Share your thoughts..." type="text"/>
+<button class="text-outline hover:text-primary transition-colors ml-2" style="">
+<span class="material-symbols-outlined" data-icon="sentiment_satisfied" style="">sentiment_satisfied</span>
+</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-on-primary hover:opacity-90 transition-opacity bg-gradient-to-br from-primary to-primary-container" style="">
+<span class="material-symbols-outlined text-lg" data-icon="add" style="">add</span>
+</button>
+</div>
+<!-- Subtle Handle for Gestures -->
+<div class="w-12 h-1 bg-surface-container-highest rounded-full mx-auto opacity-50"></div>
+</footer>
+</body></html>

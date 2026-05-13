@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Conversations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fbf9f9",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "surface-dim": "#dbdad9",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-tertiary-fixed-variant": "#e3e2e2",
+                        "on-secondary-container": "#1b1c1c",
+                        "on-surface": "#1b1c1c",
+                        "tertiary-fixed-dim": "#464747",
+                        "on-primary-fixed-variant": "#e3e2e2",
+                        "on-primary": "#e3e2e2",
+                        "surface-container-high": "#e9e8e7",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#c7c6c6",
+                        "on-tertiary": "#e3e2e2",
+                        "on-primary-container": "#ffffff",
+                        "primary-container": "#3b3b3c",
+                        "on-tertiary-container": "#ffffff",
+                        "secondary-fixed": "#c7c6c6",
+                        "on-secondary-fixed-variant": "#3b3b3c",
+                        "primary": "#000000",
+                        "on-tertiary-fixed": "#ffffff",
+                        "outline-variant": "#c6c6c6",
+                        "on-error-container": "#410002",
+                        "surface-variant": "#e3e2e2",
+                        "on-background": "#1b1c1c",
+                        "background": "#fbf9f9",
+                        "surface-container": "#efeded",
+                        "primary-fixed-dim": "#464747",
+                        "outline": "#777777",
+                        "inverse-on-surface": "#f2f0f0",
+                        "surface-container-lowest": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#5e5e5e",
+                        "on-surface-variant": "#474747",
+                        "surface-container-low": "#f5f3f3",
+                        "secondary-container": "#d5d4d4",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#ffffff",
+                        "surface": "#fbf9f9",
+                        "tertiary": "#3b3b3c",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#5e5e5e",
+                        "secondary-fixed-dim": "#acabab",
+                        "inverse-surface": "#303031",
+                        "tertiary-container": "#747474",
+                        "primary-fixed": "#5e5e5e",
+                        "secondary": "#5e5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Noto Serif", "serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                        "label": ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Noto Serif', serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col pb-20 md:pb-0 selection:bg-surface-container-highest">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-40 bg-surface flex justify-between items-center w-full px-6 py-4 transition-all duration-200 ease-in-out">
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<h1 class="text-xl font-bold font-headline text-on-surface tracking-tight">Conversations</h1>
+<button class="text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 w-full max-w-2xl mx-auto px-4 sm:px-6 flex flex-col">
+<!-- Search Bar -->
+<div class="py-2 mb-4 sticky top-[72px] z-30 bg-background/95 backdrop-blur-sm">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline transition-colors group-focus-within:text-on-surface">search</span>
+<input class="w-full bg-surface-container-low text-on-surface font-body text-sm rounded-full py-3 pl-12 pr-4 border-none focus:ring-2 focus:ring-outline transition-shadow placeholder:text-outline" placeholder="Search" type="text"/>
+</div>
+</div>
+<!-- Chat List -->
+<div class="flex flex-col gap-1">
+<!-- Chat Item: Active/Unread -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="relative">
+<div class="w-14 h-14 rounded-full bg-surface-container overflow-hidden shrink-0 border border-surface-container-highest">
+<img alt="Avatar" class="w-full h-full object-cover grayscale opacity-90 group-hover:opacity-100 transition-opacity" data-alt="portrait of a young asian woman with soft natural lighting and neutral background in black and white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPZPHlxy16JvPrcOdpbPVOFBiUQ-z2WeLg9Ep306r50HAUOQtnP3ij2qT39br7T2FM1JaWVzwxIvwjikFZcoRKFJb1HFixLNYI-DbkhqUIt-KM26gToC9800P_x3EtBQJnc3CeYNa7QyMcqelv2SbUjSuW9F8knIiFcV95Az_kMLVGUEB2vG1pPDWhLRvSPI6vCM6fP8-3WwId-GqJq8vSj_Pj_webAZ37IkMhUDRtJAcPzyOEHi0vD4i-CwWxsjzkio1UjpY3RgFC"/>
+</div>
+<!-- Unread Indicator -->
+<div class="absolute top-0 right-0 w-3.5 h-3.5 bg-primary rounded-full border-2 border-background"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h2 class="font-headline font-bold text-lg text-on-surface truncate">ハナ</h2>
+<span class="text-xs font-label text-on-surface font-medium">10:42 AM</span>
+</div>
+<p class="font-body text-sm text-on-surface truncate font-medium">The exhibition opens next week. Are we still going together?</p>
+</div>
+</div>
+<!-- Chat Item: Read -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-14 h-14 rounded-full bg-surface-container overflow-hidden shrink-0 border border-surface-container-highest">
+<img alt="Avatar" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity" data-alt="monochrome portrait of a man looking thoughtful with subtle side lighting against a dark grey background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9I-X_zwOE9WXgaPM8Bzfa1QXyRFYQaZOHS1LDZ5Hf8xMgZ29GtOg4bWeqd3ddRbmOySSXmzxiOjz1mSr4XtJc2k6mYtz_74dFYqiBXT2fqFZB60QCD94ZKyE6Hpk9wK0omY8QkVEMHFj6Mw9If00gyTmGskCc6eDZh4pq-SkyCGo8lrgwbRgQEWV2Q_LDvclM_ba22THkYekk_BHIzUn-pYgQCkfOhMIWQVUwMau_ui2l5oGAbpvTk1zJAFHV0bwfNoCU_lvqY9Mu"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h2 class="font-headline font-bold text-lg text-on-surface truncate">Kenji</h2>
+<span class="text-xs font-label text-outline">Yesterday</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate">I left the documents on your desk. Let me know if you need anything else.</p>
+</div>
+</div>
+<!-- Chat Item: Read -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-14 h-14 rounded-full bg-surface-container overflow-hidden shrink-0 border border-surface-container-highest">
+<img alt="Avatar" class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity" data-alt="close up black and white portrait of a woman looking directly at camera with clean minimalist aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqXjPz3-ElE_JqbhFA4Q35E0j04fTc-uOCNcIxX9MzyqWNwKmYnl2K47ydeY780ABi-hmSWyaPscoNN4c5NuIwjwnGrnL5JQ8OrjhKLipCSFqQBrliRMKssqR55FamtIE9XbkdniC79F68qoeOlW6bWGY50tdn43m-Oeu7i0HzVjSHHdmatLVLWwsQQcUlOtZ3mR8aEEo0jP1XB62xGqsAKsLvlLtASCpmrL41kACLpFeBamsRn1C6ksLQaKxdgbzqwav9IoVMOl6n"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h2 class="font-headline font-bold text-lg text-on-surface truncate">愛子</h2>
+<span class="text-xs font-label text-outline">Tuesday</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate">Thank you for the coffee earlier. It was much needed.</p>
+</div>
+</div>
+<!-- Chat Item: Read -->
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-14 h-14 rounded-full bg-surface-container overflow-hidden shrink-0 flex items-center justify-center bg-surface-container-high border border-surface-container-highest">
+<span class="material-symbols-outlined text-outline text-2xl">group</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-0.5">
+<h2 class="font-headline font-bold text-lg text-on-surface truncate">Design Studio Project</h2>
+<span class="text-xs font-label text-outline">Monday</span>
+</div>
+<p class="font-body text-sm text-on-surface-variant truncate"><span class="text-on-surface">Mark:</span> The latest mockups look solid. Proceeding to dev.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface/90 backdrop-blur-md">
+<!-- Chat (Active) -->
+<button class="flex flex-col items-center justify-center text-on-surface bg-surface-container-high rounded-xl px-4 py-1 active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-0.5" data-icon="chat" data-weight="fill" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="font-label text-[11px] tracking-tight font-medium">Chat</span>
+</button>
+<!-- Memories (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-on-surface active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-0.5" data-icon="auto_stories">auto_stories</span>
+<span class="font-label text-[11px] tracking-tight">Memories</span>
+</button>
+<!-- Settings (Inactive) -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-on-surface active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-0.5" data-icon="settings">settings</span>
+<span class="font-label text-[11px] tracking-tight">Settings</span>
+</button>
+</nav>
+</body></html>

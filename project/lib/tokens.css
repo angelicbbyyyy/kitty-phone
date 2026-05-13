@@ -1,0 +1,124 @@
+/* Monochrome Elegance — design tokens */
+:root {
+  /* Surface / neutrals */
+  --surface: #fbf9f9;
+  --surface-bright: #fbf9f9;
+  --surface-dim: #dbdad9;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f5f3f3;
+  --surface-container: #efeded;
+  --surface-container-high: #e9e8e7;
+  --surface-container-highest: #e3e2e2;
+  --surface-variant: #e3e2e2;
+
+  /* Text */
+  --on-surface: #1b1c1c;
+  --on-surface-variant: #474747;
+  --on-background: #1b1c1c;
+
+  /* Primary (black in monochrome) */
+  --primary: #000000;
+  --primary-container: #3b3b3c;
+  --on-primary: #e3e2e2;
+  --on-primary-container: #ffffff;
+
+  /* Secondary / Tertiary */
+  --secondary: #5e5e5e;
+  --tertiary: #3b3b3c;
+
+  /* Outline */
+  --outline: #777777;
+  --outline-variant: #c6c6c6;
+
+  /* Radii (moderate — level 2) */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 9999px;
+
+  /* Spacing (level 2 — normal) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+
+  /* Fonts */
+  --font-serif: 'Noto Serif', 'Georgia', serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+}
+
+html[data-dark="true"] {
+  --surface: #141414;
+  --surface-bright: #1e1e1e;
+  --surface-dim: #0e0e0e;
+  --surface-container-lowest: #0a0a0a;
+  --surface-container-low: #181818;
+  --surface-container: #1c1c1c;
+  --surface-container-high: #222222;
+  --surface-container-highest: #2a2a2a;
+  --surface-variant: #262626;
+
+  --on-surface: #f2f0f0;
+  --on-surface-variant: #b7b7b7;
+  --on-background: #f2f0f0;
+
+  --primary: #ffffff;
+  --primary-container: #e3e2e2;
+  --on-primary: #1b1c1c;
+  --on-primary-container: #1b1c1c;
+
+  --outline: #777777;
+  --outline-variant: #3b3b3c;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  background: #0d0d0d;
+  color: var(--on-surface);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.font-serif { font-family: var(--font-serif); }
+.font-sans { font-family: var(--font-sans); }
+
+/* hide scrollbars */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* material symbol baseline */
+.msi {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  display: inline-block;
+}
+.msi.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+/* Drag animations */
+@keyframes jiggle {
+  0% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1.2deg); }
+  100% { transform: rotate(-1.2deg); }
+}
+.jiggle { animation: jiggle 0.28s ease-in-out infinite; transform-origin: center; }
+.jiggle-alt { animation: jiggle 0.28s ease-in-out infinite reverse; transform-origin: center; }
+
+/* Label caps style from references */
+.label-caps {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-surface);
+}
