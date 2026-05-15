@@ -1821,30 +1821,53 @@ const ChatDetail = ({ chat, onBack, onPersist, wallet, setWallet }) => {
     );
   }
 
+  const _triggerAI = (msgHistory) => {
+    if (window.KLP?.ready) {
+      setGenerating(true);
+      setMessages(prev => [...prev, { from: 'them', typing: true, time: 'Now' }]);
+      const textMsgs = msgHistory.filter(m => m.text && !m.typing);
+      window.KLP.chat.generateReply(chat, textMsgs, {
+        onMessage: (text) => {
+          setMessages(prev => [...prev.filter(m => !m.typing), { from: 'them', text, time: 'Now' }]);
+          setGenerating(false);
+        },
+        onError: (err) => {
+          const note = err?.includes('API key') || err?.includes('No model')
+            ? err
+            : `[couldn't reach ${chat.name} — check Settings → General API]`;
+          setMessages(prev => [...prev.filter(m => !m.typing), { from: 'them', text: note, time: 'Now' }]);
+          setGenerating(false);
+        },
+      });
+    } else {
+      // Fallback: random pool until AI modules load
+      setGenerating(true);
+      const shortId = chat.id ? chat.id.replace(/^seed_/, '') : '';
+      const pool = CHAT_REPLIES[chat.id] || CHAT_REPLIES[shortId] || DEFAULT_REPLIES;
+      const lastThem = [...msgHistory].reverse().find(m => m.from === 'them')?.text;
+      const candidates = pool.filter(t => t !== lastThem);
+      const pick = (candidates.length ? candidates : pool)[Math.floor(Math.random() * (candidates.length || pool.length))];
+      setMessages(prev => [...prev, { from: 'them', typing: true, time: 'Now' }]);
+      setTimeout(() => {
+        setMessages(prev => [...prev.filter(m => !m.typing), { from: 'them', text: pick, time: 'Now' }]);
+        setGenerating(false);
+      }, 900 + Math.random() * 700);
+    }
+  };
+
   const generateReply = () => {
     if (generating) return;
-    setGenerating(true);
-    const shortIdChat = chat.id ? chat.id.replace(/^seed_/, '') : '';
-    const pool = CHAT_REPLIES[chat.id] || CHAT_REPLIES[shortIdChat] || DEFAULT_REPLIES;
-    // avoid repeating the last "them" message if possible
-    const lastThem = [...messages].reverse().find(m => m.from === 'them')?.text;
-    const candidates = pool.filter(t => t !== lastThem);
-    const pick = (candidates.length ? candidates : pool)[Math.floor(Math.random() * (candidates.length || pool.length))];
-    // typing indicator
-    setMessages(prev => [...prev, { from: 'them', typing: true, time: 'Now' }]);
-    setTimeout(() => {
-      setMessages(prev => {
-        const next = prev.filter(m => !m.typing);
-        return [...next, { from: 'them', text: pick, time: 'Now' }];
-      });
-      setGenerating(false);
-    }, 900 + Math.random() * 700);
+    _triggerAI(messages);
   };
 
   const send = () => {
     if (!input.trim()) return;
-    setMessages([...messages, { from: 'me', text: input.trim(), time: 'Now' }]);
+    const text = input.trim();
+    const updated = [...messages, { from: 'me', text, time: 'Now' }];
+    setMessages(updated);
     setInput('');
+    window.KLP?.chat?.persistUserMessage(chat.id, text);
+    if (!generating) _triggerAI(updated);
   };
 
   const status = CHARACTER_STATUS[chat.id] || { label: 'Offline', tone: 'offline' };
@@ -6852,5 +6875,8 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
+
+<!-- AI modules: Gemini adapter + IndexedDB + chat wiring -->
+<script type="module" src="js/app.js"></script>
 </body>
 </html>
