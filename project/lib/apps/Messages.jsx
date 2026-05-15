@@ -108,19 +108,55 @@ const MessageBubble = ({ msg }) => {
   );
 };
 
+const TypingBubble = () => (
+  <div style={{
+    display: 'flex', alignItems: 'flex-start', marginBottom: 12,
+  }}>
+    <div style={{
+      padding: '9px 16px', borderRadius: 20,
+      background: 'var(--surface-container-low)',
+      border: '0.5px solid var(--outline-variant)',
+      fontSize: 18, letterSpacing: 3, color: 'var(--on-surface-variant)',
+      lineHeight: 1,
+    }}>···</div>
+  </div>
+);
+
 const ChatDetail = ({ chat, onBack }) => {
   const [input, setInput] = React.useState('');
   const [messages, setMessages] = React.useState(chat.messages);
+  const [isTyping, setIsTyping] = React.useState(false);
+  const [error, setError] = React.useState(null);
   const scrollRef = React.useRef();
 
   React.useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages]);
+  }, [messages, isTyping]);
 
-  const send = () => {
-    if (!input.trim()) return;
-    setMessages([...messages, { from: 'me', text: input.trim(), time: 'Now' }]);
+  const send = async () => {
+    if (!input.trim() || isTyping) return;
+    const userMsg = { from: 'me', text: input.trim(), time: 'Now' };
+    const next = [...messages, userMsg];
+    setMessages(next);
     setInput('');
+    setError(null);
+
+    if (!window.KLP?.chat?.generateReply) {
+      setError('AI not ready — reload the page and try again.');
+      return;
+    }
+
+    await window.KLP.chat.generateReply(chat, next, {
+      onTyping: () => setIsTyping(true),
+      onMessage: (text) => {
+        setIsTyping(false);
+        setMessages(prev => [...prev, { from: 'them', text, time: 'Now' }]);
+      },
+      onError: (msg) => {
+        setIsTyping(false);
+        setError(msg);
+      },
+    });
   };
 
   return (
@@ -156,6 +192,15 @@ const ChatDetail = ({ chat, onBack }) => {
           }}>Today</span>
         </div>
         {messages.map((m, i) => <MessageBubble key={i} msg={m} />)}
+        {isTyping && <TypingBubble />}
+        {error && (
+          <div style={{
+            textAlign: 'center', margin: '4px 0 8px',
+            fontSize: 11, color: 'var(--on-surface-variant)',
+            background: 'var(--surface-container)', borderRadius: 10,
+            padding: '6px 12px',
+          }}>{error}</div>
+        )}
       </div>
 
       <div style={{
@@ -175,6 +220,7 @@ const ChatDetail = ({ chat, onBack }) => {
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') send(); }}
             placeholder="Share your thoughts..."
+            disabled={isTyping}
             style={{
               flex: 1, background: 'transparent', border: 0, outline: 'none',
               fontFamily: 'var(--font-sans)', fontSize: 13, color: 'var(--on-surface)',
@@ -182,9 +228,11 @@ const ChatDetail = ({ chat, onBack }) => {
           />
           <span className="msi" style={{ fontSize: 18, color: 'var(--outline)' }}>sentiment_satisfied</span>
         </div>
-        <button onClick={send} style={{
-          width: 36, height: 36, borderRadius: '50%', border: 0, cursor: 'pointer',
+        <button onClick={send} disabled={isTyping} style={{
+          width: 36, height: 36, borderRadius: '50%', border: 0,
+          cursor: isTyping ? 'default' : 'pointer',
           background: 'var(--primary)', color: 'var(--on-primary)',
+          opacity: isTyping ? 0.5 : 1,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span className="msi" style={{ fontSize: 18 }}>{input.trim() ? 'arrow_upward' : 'add'}</span>
