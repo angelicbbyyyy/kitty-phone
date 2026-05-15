@@ -541,7 +541,83 @@ const ContactsApp = ({ onExit }) => {
 };
 
 // ─────── SETTINGS ───────
+const ApiPanel = ({ onBack }) => {
+  const saved = (() => {
+    try { return JSON.parse(localStorage.getItem('klp_general_api') || '{}'); } catch { return {}; }
+  })();
+  const [key, setKey] = React.useState(saved.apiKey || '');
+  const [model, setModel] = React.useState(saved.model || 'gemini-2.0-flash');
+  const [saved2, setSaved2] = React.useState(false);
+
+  const save = () => {
+    localStorage.setItem('klp_general_api', JSON.stringify({ apiKey: key.trim(), model: model.trim() || 'gemini-2.0-flash' }));
+    setSaved2(true);
+    setTimeout(() => setSaved2(false), 2000);
+  };
+
+  const inputStyle = {
+    width: '100%', boxSizing: 'border-box',
+    padding: '11px 14px', borderRadius: 12,
+    border: '0.5px solid var(--outline-variant)',
+    background: 'var(--surface-container-lowest)',
+    fontFamily: 'var(--font-sans)', fontSize: 13,
+    color: 'var(--on-surface)', outline: 'none',
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <AppBar title="General API" onBack={onBack} />
+      <div style={{ flex: 1, overflowY: 'auto', padding: '8px 20px 32px' }} className="no-scrollbar">
+        <div style={{ fontSize: 12, color: 'var(--on-surface-variant)', marginBottom: 20, lineHeight: 1.5 }}>
+          Enter your Gemini API key. Get one free at{' '}
+          <span style={{ color: 'var(--on-surface)', fontWeight: 500 }}>aistudio.google.com</span>.
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: 0.22, textTransform: 'uppercase', color: 'var(--on-surface-variant)', marginBottom: 6, fontWeight: 600 }}>API Key</div>
+            <input
+              type="password"
+              value={key}
+              onChange={e => setKey(e.target.value)}
+              placeholder="AIza..."
+              style={inputStyle}
+            />
+          </div>
+
+          <div>
+            <div style={{ fontSize: 10, letterSpacing: 0.22, textTransform: 'uppercase', color: 'var(--on-surface-variant)', marginBottom: 6, fontWeight: 600 }}>Model</div>
+            <input
+              value={model}
+              onChange={e => setModel(e.target.value)}
+              placeholder="gemini-2.0-flash"
+              style={inputStyle}
+            />
+            <div style={{ fontSize: 10, color: 'var(--on-surface-variant)', marginTop: 5 }}>
+              Options: gemini-2.0-flash · gemini-1.5-pro · gemini-2.5-pro
+            </div>
+          </div>
+
+          <button onClick={save} style={{
+            marginTop: 8, padding: '13px', borderRadius: 14, border: 0, cursor: 'pointer',
+            background: saved2 ? 'var(--surface-container-high)' : 'var(--primary)',
+            color: saved2 ? 'var(--on-surface)' : 'var(--on-primary)',
+            fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 600,
+            transition: 'background 0.2s',
+          }}>
+            {saved2 ? 'Saved ✓' : 'Save'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SettingsApp = ({ onExit, tweaks, setTweak }) => {
+  const [panel, setPanel] = React.useState(null);
+
+  if (panel === 'api') return <ApiPanel onBack={() => setPanel(null)} />;
+
   const groups = [
     { header: 'Account', items: [
       { icon: 'person', label: 'Profile', detail: 'ハナ' },
@@ -552,6 +628,9 @@ const SettingsApp = ({ onExit, tweaks, setTweak }) => {
       { icon: 'dark_mode', label: 'Dark Mode', toggle: 'dark' },
       { icon: 'wallpaper', label: 'Wallpaper', detail: tweaks.wallpaper },
       { icon: 'view_module', label: 'Layout', detail: tweaks.layout },
+    ]},
+    { header: 'AI', items: [
+      { icon: 'api', label: 'General API', onClick: () => setPanel('api') },
     ]},
     { header: 'General', items: [
       { icon: 'language', label: 'Language', detail: 'English' },
@@ -575,7 +654,10 @@ const SettingsApp = ({ onExit, tweaks, setTweak }) => {
               overflow: 'hidden',
             }}>
               {g.items.map((it, i) => (
-                <button key={i} onClick={() => it.toggle && setTweak(it.toggle, !tweaks[it.toggle])} style={{
+                <button key={i} onClick={() => {
+                  if (it.toggle) setTweak(it.toggle, !tweaks[it.toggle]);
+                  else if (it.onClick) it.onClick();
+                }} style={{
                   display: 'flex', alignItems: 'center', gap: 14,
                   width: '100%', padding: '13px 14px',
                   background: 'transparent', border: 0, cursor: 'pointer', textAlign: 'left',
