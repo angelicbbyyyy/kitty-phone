@@ -1,5 +1,6 @@
 // Assembles the system prompt and routes to the correct adapter
 import { callGemini } from '../adapters/gemini.js';
+import { callOpenRouter, OPENROUTER_BASE } from '../adapters/openrouter.js';
 import { resolveCharacter } from './character.js';
 
 const SYSTEM_TEMPLATE = `global system rules: You are [char_name], a real person texting [user_name] on their phone.
@@ -38,9 +39,9 @@ function getApiConfig(chatId) {
     const cs = JSON.parse(localStorage.getItem('klp.chatSettings.' + chatId) || '{}');
     if (cs?.api?.useSeparate && cs.api.chat?.key) {
       return {
-        baseUrl: cs.api.chat.url  || '',
+        baseUrl: cs.api.chat.url   || OPENROUTER_BASE,
         apiKey:  cs.api.chat.key,
-        model:   cs.api.chat.model || 'gemini-2.0-flash',
+        model:   cs.api.chat.model || 'openai/gpt-4o-mini',
       };
     }
   } catch {}
@@ -48,13 +49,19 @@ function getApiConfig(chatId) {
   try {
     const cfg = JSON.parse(localStorage.getItem('klp_general_api') || '{}');
     return {
-      baseUrl: cfg.baseUrl || '',
+      baseUrl: cfg.baseUrl || OPENROUTER_BASE,
       apiKey:  cfg.apiKey  || '',
-      model:   cfg.model   || 'gemini-2.0-flash',
+      model:   cfg.model   || 'openai/gpt-4o-mini',
     };
   } catch {
-    return { baseUrl: '', apiKey: '', model: 'gemini-2.0-flash' };
+    return { baseUrl: OPENROUTER_BASE, apiKey: '', model: 'openai/gpt-4o-mini' };
   }
+}
+
+function pickAdapter(baseUrl) {
+  const url = (baseUrl || '').toLowerCase();
+  if (url.includes('googleapis.com') || url.includes('generativelanguage')) return 'gemini';
+  return 'openrouter';
 }
 
 function buildSystemPrompt(character) {
@@ -91,5 +98,7 @@ export async function sendMessage({ chatId, messages }) {
   const apiConfig   = getApiConfig(chatId);
   const systemPrompt = buildSystemPrompt(character);
 
-  return callGemini({ ...apiConfig, systemPrompt, messages });
+  const adapter = pickAdapter(apiConfig.baseUrl);
+  if (adapter === 'gemini') return callGemini({ ...apiConfig, systemPrompt, messages });
+  return callOpenRouter({ ...apiConfig, systemPrompt, messages });
 }

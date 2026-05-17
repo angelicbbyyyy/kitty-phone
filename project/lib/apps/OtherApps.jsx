@@ -541,18 +541,25 @@ const ContactsApp = ({ onExit }) => {
 };
 
 // ─────── SETTINGS ───────
+const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
+
 const ApiPanel = ({ onBack }) => {
   const saved = (() => {
     try { return JSON.parse(localStorage.getItem('klp_general_api') || '{}'); } catch { return {}; }
   })();
-  const [key, setKey] = React.useState(saved.apiKey || '');
-  const [model, setModel] = React.useState(saved.model || 'gemini-2.0-flash');
-  const [saved2, setSaved2] = React.useState(false);
+  const [baseUrl, setBaseUrl] = React.useState(saved.baseUrl || OPENROUTER_BASE_URL);
+  const [key, setKey]         = React.useState(saved.apiKey || '');
+  const [model, setModel]     = React.useState(saved.model  || 'openai/gpt-4o-mini');
+  const [didSave, setDidSave] = React.useState(false);
 
   const save = () => {
-    localStorage.setItem('klp_general_api', JSON.stringify({ apiKey: key.trim(), model: model.trim() || 'gemini-2.0-flash' }));
-    setSaved2(true);
-    setTimeout(() => setSaved2(false), 2000);
+    localStorage.setItem('klp_general_api', JSON.stringify({
+      baseUrl: baseUrl.trim() || OPENROUTER_BASE_URL,
+      apiKey:  key.trim(),
+      model:   model.trim() || 'openai/gpt-4o-mini',
+    }));
+    setDidSave(true);
+    setTimeout(() => setDidSave(false), 2000);
   };
 
   const inputStyle = {
@@ -564,48 +571,68 @@ const ApiPanel = ({ onBack }) => {
     color: 'var(--on-surface)', outline: 'none',
   };
 
+  const labelStyle = {
+    fontSize: 10, letterSpacing: 0.22, textTransform: 'uppercase',
+    color: 'var(--on-surface-variant)', marginBottom: 6, fontWeight: 600,
+  };
+
+  const hintStyle = { fontSize: 10, color: 'var(--on-surface-variant)', marginTop: 5, lineHeight: 1.5 };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <AppBar title="General API" onBack={onBack} />
       <div style={{ flex: 1, overflowY: 'auto', padding: '8px 20px 32px' }} className="no-scrollbar">
-        <div style={{ fontSize: 12, color: 'var(--on-surface-variant)', marginBottom: 20, lineHeight: 1.5 }}>
-          Enter your Gemini API key. Get one free at{' '}
-          <span style={{ color: 'var(--on-surface)', fontWeight: 500 }}>aistudio.google.com</span>.
-        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 0.22, textTransform: 'uppercase', color: 'var(--on-surface-variant)', marginBottom: 6, fontWeight: 600 }}>API Key</div>
+            <div style={labelStyle}>Base URL</div>
+            <input
+              value={baseUrl}
+              onChange={e => setBaseUrl(e.target.value)}
+              placeholder="https://openrouter.ai/api/v1"
+              style={inputStyle}
+            />
+            <div style={hintStyle}>
+              OpenRouter: https://openrouter.ai/api/v1{'\n'}
+              Gemini: https://generativelanguage.googleapis.com
+            </div>
+          </div>
+
+          <div>
+            <div style={labelStyle}>API Key</div>
             <input
               type="password"
               value={key}
               onChange={e => setKey(e.target.value)}
-              placeholder="AIza..."
+              placeholder="sk-or-..."
               style={inputStyle}
             />
+            <div style={hintStyle}>Get a free OpenRouter key at openrouter.ai/keys</div>
           </div>
 
           <div>
-            <div style={{ fontSize: 10, letterSpacing: 0.22, textTransform: 'uppercase', color: 'var(--on-surface-variant)', marginBottom: 6, fontWeight: 600 }}>Model</div>
+            <div style={labelStyle}>Model</div>
             <input
               value={model}
               onChange={e => setModel(e.target.value)}
-              placeholder="gemini-2.0-flash"
+              placeholder="openai/gpt-4o-mini"
               style={inputStyle}
             />
-            <div style={{ fontSize: 10, color: 'var(--on-surface-variant)', marginTop: 5 }}>
-              Options: gemini-2.0-flash · gemini-1.5-pro · gemini-2.5-pro
+            <div style={hintStyle}>
+              OpenRouter options: openai/gpt-4o-mini · anthropic/claude-haiku-4-5 · google/gemini-flash-1.5{'\n'}
+              Gemini options: gemini-2.0-flash · gemini-1.5-pro
             </div>
           </div>
 
           <button onClick={save} style={{
-            marginTop: 8, padding: '13px', borderRadius: 14, border: 0, cursor: 'pointer',
-            background: saved2 ? 'var(--surface-container-high)' : 'var(--primary)',
-            color: saved2 ? 'var(--on-surface)' : 'var(--on-primary)',
+            marginTop: 4, padding: '13px', borderRadius: 14, border: 0, cursor: 'pointer',
+            background: didSave ? 'var(--surface-container-high)' : 'var(--primary)',
+            color: didSave ? 'var(--on-surface)' : 'var(--on-primary)',
             fontFamily: 'var(--font-sans)', fontSize: 14, fontWeight: 600,
             transition: 'background 0.2s',
           }}>
-            {saved2 ? 'Saved ✓' : 'Save'}
+            {didSave ? 'Saved ✓' : 'Save'}
           </button>
         </div>
       </div>
